@@ -52,7 +52,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         text = self.driver.find_element(By.CSS_SELECTOR, ".col").text
         assert len(text) > 0
         self.driver.get(f'{self.live_server_url}/product/show/55')
-        elements = self.driver.find_elements(By.LINK_TEXT, "Editar")
+        elements = self.driver.find_elements(By.XPATH, "//a[contains(text(),\'Editar\')]")
         assert len(elements) > 0
         
         
