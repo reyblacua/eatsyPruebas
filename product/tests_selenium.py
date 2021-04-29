@@ -48,9 +48,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario2PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.get(f'{self.live_server_url}/product/list')
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".padding-list:nth-child(4) .w-100")
-        assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/report/list')
         text = self.driver.find_element(By.CSS_SELECTOR, ".col").text
         assert text == "Notificaciones de productos reportados"
