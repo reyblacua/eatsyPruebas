@@ -37,6 +37,8 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/product/show/55')
         elements = self.driver.find_elements(By.LINK_TEXT, "Editar")
         assert len(elements) == 0
+        self.driver.get(f'{self.live_server_url}/product/review/46')
+        assert self.driver.find_element(By.CSS_SELECTOR, ".mb-3").text == "Inicio de sesión"
 
     
     def test_restricciones_admin(self):
@@ -51,9 +53,10 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/product/report/list')
         text = self.driver.find_element(By.CSS_SELECTOR, ".col").text
         assert len(text) > 0
-        self.driver.get(f'{self.live_server_url}/product/show/55')
-        elements = self.driver.find_elements(By.XPATH, "//a[contains(text(),\'Editar\')]")
+        self.driver.get(f'{self.live_server_url}/product/review/46')
+        elements = self.driver.find_elements(By.CSS_SELECTOR, ".save")
         assert len(elements) > 0
+        
         
         
     def test_admineditarproducto(self):
