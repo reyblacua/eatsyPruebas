@@ -44,9 +44,9 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.set_window_size(1080, 1036)
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("Usuario2")
+        self.driver.find_element(By.ID, "id_username").send_keys("admin")
         self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario2PasswordJQSA!=")
+        self.driver.find_element(By.ID, "id_password").send_keys("eatsyAdminPasswordJQSA!=1")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/product/report/list')
         text = self.driver.find_element(By.CSS_SELECTOR, ".col").text
