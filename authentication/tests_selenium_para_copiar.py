@@ -80,6 +80,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.implicitly_wait(5)
+        self.driver.find_element(By.LINK_TEXT, "Mi cuenta").click()
         self.driver.find_element(By.LINK_TEXT, "Mi Perfil").click()
         self.driver.implicitly_wait(15)
         assert self.driver.find_element(By.XPATH, "//h2[contains(.,\'Mi Perfil\')]").text == "Mi Perfil"
@@ -90,6 +91,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.implicitly_wait(5)
+        self.driver.find_element(By.LINK_TEXT, "Mi cuenta").click()
         self.driver.find_element(By.LINK_TEXT, "Mi Perfil").click()
         self.driver.implicitly_wait(15)
         self.driver.find_element(By.ID, "id_nombre").send_keys("CambioNombre")
@@ -104,11 +106,11 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.implicitly_wait(5)
+        self.driver.find_element(By.LINK_TEXT, "Mi cuenta").click()
         self.driver.find_element(By.LINK_TEXT, "Mi Perfil").click()
         self.driver.implicitly_wait(15)
         self.driver.find_element(By.ID, "id_nombre").send_keys(Keys.DELETE)
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.find_element(By.LINK_TEXT, "Mi Perfil").click()
         self.driver.implicitly_wait(15)
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         assert value == "Keefe"
@@ -123,6 +125,7 @@ class SeleniumTests(StaticLiveServerTestCase):
             p.activeAccount = True
             p.save()
         self.driver.implicitly_wait(10)
+        self.driver.find_element(By.LINK_TEXT, "Mi cuenta").click()
         self.driver.find_element(By.LINK_TEXT, "Mi Perfil").click()
         self.driver.implicitly_wait(20)
         self.driver.find_element(By.ID, "cancelButton").click()
