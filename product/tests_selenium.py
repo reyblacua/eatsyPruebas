@@ -175,19 +175,18 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_aboutUs(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.CSS_SELECTOR, "#botonesFooterLeft u").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-2:nth-child(1) u").click()
         self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
         assert self.driver.find_element(By.CSS_SELECTOR, ".titleblock").text == "¡Nuestro proyecto!"
 
     def test_contactUs(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.CSS_SELECTOR, "#botonesFooterCenter u").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-2:nth-child(2) u").click()
         self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
         assert self.driver.find_element(By.CSS_SELECTOR, ".titleblock").text == "¡Contáctanos!"
 
     def test_privacy(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.CSS_SELECTOR, "#botonesFooterRight u").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-9 > p:nth-child(1)").click()
-        assert self.driver.find_element(By.CSS_SELECTOR, ".col-sm-9 > p:nth-child(1)").text == "El presente contrato describe los términos y condiciones aplicables al uso del contenido, productos y/o servicios del sitio web Eatsy del cual es titular ISPP - Grupo 6 de la ETSII de la Universidad de Sevilla. Para hacer uso del contenido, productos y/o servicios del sitio web el usuario deberá sujetarse a los presentes términos y condiciones:"
-        
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-3 u").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
+        assert self.driver.find_element(By.CSS_SELECTOR, ".titleblock").text == "Políticas de privacidad"
