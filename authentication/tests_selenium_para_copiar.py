@@ -84,6 +84,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        self.driver.implicitly_wait(15)
         assert self.driver.find_element(By.XPATH, "//h2[contains(.,\'Mi Perfil\')]").text == "Mi Perfil"
 
     def test_modificar_perfil(self):
@@ -93,6 +94,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        self.driver.implicitly_wait(15)
         self.driver.find_element(By.ID, "id_nombre").send_keys("CambioNombre")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
 
@@ -106,9 +108,11 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        self.driver.implicitly_wait(15)
         self.driver.find_element(By.ID, "id_nombre").send_keys(Keys.DELETE)
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        self.driver.implicitly_wait(15)
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         assert value == "Keefe"
 
@@ -123,6 +127,8 @@ class SeleniumTests(StaticLiveServerTestCase):
             p.save()
         self.driver.implicitly_wait(10)
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+
+        self.driver.implicitly_wait(20)
         self.driver.find_element(By.ID, "cancelButton").click()
         WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.LINK_TEXT, "Activa tu cuenta")))
         assert self.driver.find_element(By.LINK_TEXT, "Activa tu cuenta").text == "Activa tu cuenta"
