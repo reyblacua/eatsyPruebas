@@ -172,4 +172,21 @@ class SeleniumTests(StaticLiveServerTestCase):
     #    dropdown.find_element(By.XPATH, "//option[. = 'Vegano']").click()
     #    elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
     #    assert len(elements) > 0
-        
+
+    def test_aboutUs(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-2:nth-child(1) u").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
+        assert self.driver.find_element(By.CSS_SELECTOR, ".titleblock").text == "¡Nuestro proyecto!"
+
+    def test_contactUs(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-2:nth-child(2) u").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
+        assert self.driver.find_element(By.CSS_SELECTOR, ".titleblock").text == "¡Contáctanos!"
+
+    def test_privacy(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-3 u").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
+        assert self.driver.find_element(By.CSS_SELECTOR, ".titleblock").text == "Políticas de privacidad"
