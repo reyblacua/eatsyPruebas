@@ -8,14 +8,14 @@ from authentication.models import User, Perfil
 class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
-        options.headless = False
+        options.headless = True
         options.add_argument("--enable-javascript")
         self.driver = webdriver.Chrome(options=options)
 
         self.driver.set_window_size(1920, 1080)
         super().setUp()
         call_command('flush', interactive=False)
-        call_command("loaddata", "datosEjemplo.json", verbosity=1)
+        call_command("loaddata", "datosEjemplo.json", verbosity=0)
 
     def tearDown(self):
         super().tearDown()
