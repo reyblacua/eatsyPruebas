@@ -3,13 +3,15 @@ from django.core.management import call_command
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from authentication.models import User, Perfil
 
 class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
         options.headless = True
-        options.add_argument("--enable-javascript")
         self.driver = webdriver.Chrome(options=options)
 
         self.driver.set_window_size(1920, 1080)
@@ -28,7 +30,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.LINK_TEXT, "Registrarse").click()
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys("user1")
-        self.driver.find_element(By.ID, "id_nombre").click()
         self.driver.find_element(By.ID, "id_nombre").send_keys("user1")
         self.driver.find_element(By.ID, "id_apellidos").click()
         self.driver.find_element(By.ID, "id_apellidos").send_keys("user1")
@@ -40,13 +41,14 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.ID, "id_v_password").click()
         self.driver.find_element(By.ID, "id_v_password").send_keys("eatsyUsuario1PasswordJQSA!=")
-        self.driver.find_element(By.CSS_SELECTOR, ".col-auto > input").click()
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "id_username")))
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys("user1")
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(2) > .col").click()
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         assert value == "user1"
@@ -74,24 +76,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(4) div:nth-child(2)").text == "* Inicio de sesión incorrecto"
 
-    # def test_suscripcion_tarjeta_correcta(self):
-      
-    #     self.driver.get(f'{self.live_server_url}/authentication/create-subscription')
-    #     self.driver.set_window_size(960, 810)
-    #     self.driver.find_element(By.ID, "id_username").send_keys("Usuario3")
-    #     self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario3PasswordJQSA!=")
-    #     self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-    #     self.driver.get(f'{self.live_server_url}/authentication/create-subscription')
-    #     self.driver.find_element(By.ID, "name").send_keys("user3")
-    #     self.driver.execute_script("card.mount('#card-element');")
-    #     self.driver.find_element(By.XPATH, "//input[@name=\'cardnumber\']").send_keys("4242 4242 4242 4242")
-    #     self.driver.find_element(By.XPATH, "//input[@name=\'exp-date\']").send_keys("04 / 24")
-    #     self.driver.find_element(By.XPATH, "//input[@name=\'cvc\']").send_keys("242")
-    #     self.driver.find_element(By.XPATH, "//input[@name=\'postal\']").send_keys("42424")
-    #     self.driver.implicitly_wait(5)
-    #     self.driver.find_element(By.XPATH, "//button[contains(.,\'¡Suscríbete!\')]").click()
-    #     self.driver.get(f'{self.live_server_url}/authentication/create-subscription/')
-    #     assert self.driver.find_element(By.CSS_SELECTOR, ".justify-content-center:nth-child(2) > div").text == "Tu cuenta ya está activada"
 
     def test_entrar_perfil(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
@@ -100,6 +84,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".mb-3")))
         assert self.driver.find_element(By.CSS_SELECTOR, ".mb-3").text == "Mi Perfil"
 
     def test_modificar_perfil(self):
@@ -112,6 +97,8 @@ class SeleniumTests(StaticLiveServerTestCase):
         value_original = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         self.driver.find_element(By.ID, "id_nombre").send_keys("CambioNombre")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         assert value == value_original+"CambioNombre"
 
@@ -122,10 +109,12 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         value_original = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         self.driver.find_element(By.ID, "id_nombre").send_keys(Keys.DELETE)
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         assert value == value_original
 
@@ -134,12 +123,13 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.implicitly_wait(20)
         p = Perfil.objects.filter(user=User.objects.filter(username="Usuario1").first()).first()
         if(p.activeAccount == False):
             p.activeAccount = True
             p.save()
+        self.driver.implicitly_wait(5)
         self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "cancelButton")))
         self.driver.find_element(By.ID, "cancelButton").click()
-        self.driver.implicitly_wait(20)
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.LINK_TEXT, "Activa tu cuenta")))
         assert self.driver.find_element(By.LINK_TEXT, "Activa tu cuenta").text == "Activa tu cuenta"
