@@ -84,7 +84,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
-        assert self.driver.find_element(By.CSS_SELECTOR, ".mb-3").text == "Mi Perfil"
+        assert self.driver.find_element(By.XPATH, "//h2[contains(.,\'Mi Perfil\')]").text == "Mi Perfil"
 
     def test_modificar_perfil(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
@@ -93,11 +93,9 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         self.driver.find_element(By.ID, "id_nombre").send_keys("CambioNombre")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
 
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         assert value == "KeefeCambioNombre"
 
@@ -108,12 +106,11 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
-        value_original = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         self.driver.find_element(By.ID, "id_nombre").send_keys(Keys.DELETE)
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/authentication/profile')
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
-        assert value == value_original
+        assert value == "Keefe"
 
     def test_cancelar_suscripcion(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
@@ -124,7 +121,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         if(p.activeAccount == False):
             p.activeAccount = True
             p.save()
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(10)
         self.driver.get(f'{self.live_server_url}/authentication/profile')
         self.driver.find_element(By.ID, "cancelButton").click()
         WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.LINK_TEXT, "Activa tu cuenta")))
