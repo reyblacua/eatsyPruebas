@@ -26,6 +26,7 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_registro_e_inicio_correcto(self):
         self.driver.get(f'{self.live_server_url}/')
+        self.driver.set_window_size(960, 810)
         self.driver.find_element(By.LINK_TEXT, "Registrarse").click()
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys("user1")
@@ -41,7 +42,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_v_password").click()
         self.driver.find_element(By.ID, "id_v_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, "id_username")))
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.ID, "id_username")))
         self.driver.find_element(By.ID, "id_username").click()
         self.driver.find_element(By.ID, "id_username").send_keys("user1")
         self.driver.find_element(By.ID, "id_password").click()
@@ -54,6 +55,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     
     def test_registro_sin_privacidad(self):
         self.driver.get(f'{self.live_server_url}/')
+        self.driver.set_window_size(960, 810)
         self.driver.find_element(By.LINK_TEXT, "Registrarse").click()
         self.driver.find_element(By.ID, "id_username").send_keys("user2")
         self.driver.find_element(By.ID, "id_nombre").send_keys("user2")
@@ -68,6 +70,7 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_inicio_con_mala_contra(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
+        self.driver.set_window_size(960, 810)
         self.driver.find_element(By.ID, "id_username").send_keys("user1")
         self.driver.find_element(By.ID, "id_password").send_keys("nocontra")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
@@ -76,41 +79,44 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_entrar_perfil(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
+        self.driver.set_window_size(960, 810)
         self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.implicitly_wait(5)
-        self.driver.find_element(By.XPATH, "//a[contains(@href, \'/authentication/profile\')]").click()
-        self.driver.implicitly_wait(15)
-        assert self.driver.find_element(By.XPATH, "//h2[contains(.,\'Mi Perfil\')]").text == "Mi Perfil"
+        self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".mb-3")))
+        assert self.driver.find_element(By.CSS_SELECTOR, ".mb-3").text == "Mi Perfil"
 
     def test_modificar_perfil(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
+        self.driver.set_window_size(960, 810)
         self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.implicitly_wait(5)
-        self.driver.find_element(By.XPATH, "//a[contains(@href, \'/authentication/profile\')]").click()
-        self.driver.implicitly_wait(15)
+        self.driver.get(f'{self.live_server_url}/authentication/profile')
+        value_original = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         self.driver.find_element(By.ID, "id_nombre").send_keys("CambioNombre")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
 
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
-        assert value == "KeefeCambioNombre"
+        assert value == value_original+"CambioNombre"
 
     def test_modificar_perfil_con_fallo(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
+        self.driver.set_window_size(960, 810)
         self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.implicitly_wait(5)
-        self.driver.find_element(By.XPATH, "//a[contains(@href, \'/authentication/profile\')]").click()
-        self.driver.implicitly_wait(15)
+        self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.ID, "id_nombre")))
+        value_original = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
         self.driver.find_element(By.ID, "id_nombre").send_keys(Keys.DELETE)
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.implicitly_wait(15)
+        self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.ID, "id_nombre")))
         value = self.driver.find_element(By.ID, "id_nombre").get_attribute("value")
-        assert value == "Keefe"
+        assert value == value_original
 
     def test_cancelar_suscripcion(self):
         self.driver.get(f'{self.live_server_url}/authentication/login')
@@ -122,8 +128,8 @@ class SeleniumTests(StaticLiveServerTestCase):
             p.activeAccount = True
             p.save()
         self.driver.implicitly_wait(10)
-        self.driver.find_element(By.XPATH, "//a[contains(@href, \'/authentication/profile\')]").click()
-        self.driver.implicitly_wait(20)
+        self.driver.get(f'{self.live_server_url}/authentication/profile')
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.ID, "cancelButton")))
         self.driver.find_element(By.ID, "cancelButton").click()
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.LINK_TEXT, "Activa tu cuenta")))
+        WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.LINK_TEXT, "Activa tu cuenta")))
         assert self.driver.find_element(By.LINK_TEXT, "Activa tu cuenta").text == "Activa tu cuenta"
