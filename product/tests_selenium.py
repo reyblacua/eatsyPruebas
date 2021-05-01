@@ -254,8 +254,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list')
-        # COMPROBAMOS LOS 2 BOTONES QUE VEN LOS USUARIOS
-        assert self.driver.find_element(By.ID, "dropdownMenuButton").text == "Borrar filtros"
+        # COMPROBAMOS LA BARRA DE BÚSQUEDA
         elements = self.driver.find_elements(By.ID, "filtros-form")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?titulo=Natillas&dietas=3&orderBy=newest')
@@ -283,8 +282,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list')
-        # COMPROBAMOS LOS 3 BOTONES QUE VE EL ADMINISTRADOR
-        assert self.driver.find_element(By.ID, "dropdownMenuButton").text == "Borrar filtros"
+        # COMPROBAMOS LOS BOTONES Y LA BARRA DE BÚSQUEDA
         elements = self.driver.find_elements(By.ID, "filtros-form")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?estado=pendiente')
