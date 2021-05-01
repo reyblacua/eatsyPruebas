@@ -180,9 +180,11 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/product/show/32')
-        self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(2) .nombreRecetaNormal .fa").click()
-        element = self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto").text
-        assert "Receta" in element
+        self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto").click()
+        assert self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto").text == "Queso rallado"
+        self.driver.find_element(By.CSS_SELECTOR, ".col-md-3 > .text-center").click()
+        self.driver.find_element(By.LINK_TEXT, "Pizza barbacoa vegana").click()
+        assert "Receta" in self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto").text
         self.driver.find_element(By.XPATH, "//span[contains(.,\'Ingredientes\')]").click()
         self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(3) .nombreRecetaNormal .fa").click()
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
