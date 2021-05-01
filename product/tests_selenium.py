@@ -179,7 +179,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.find_element(By.XPATH, "//div[@id=\'content-wrap\']/div/div[3]/div[6]/div/div[4]/div/a").click()
+        self.driver.get(f'{self.live_server_url}/product/show/32')
         self.driver.find_element(By.XPATH, "//span[contains(.,\'Recetas\')]").click()
         self.driver.find_element(By.XPATH, "//div[@id=\'p-4\']/div/div/div/div[2]/div[2]/div[3]/div/div/div/a/i").click()
         element = self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto").text
