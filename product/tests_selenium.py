@@ -247,8 +247,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
-        assert len(elements) > 0
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?page=2')
@@ -284,8 +282,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
-        assert len(elements) > 0
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?page=2')
