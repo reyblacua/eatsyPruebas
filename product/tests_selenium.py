@@ -179,15 +179,20 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.get(f'{self.live_server_url}/product/show/32')
+        #Se logea y tal
+        self.driver.get(f'{self.live_server_url}/product/show/32') #Se redirecciona por que de otra manera no encuentra el producto
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
-        assert len(elements) > 0
+        assert len(elements) > 0 #Comprueba que esta dentro del producto
+        producto = self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto").text
         self.driver.get(f'{self.live_server_url}/recipe/show/6')
-        assert "Receta" in self.driver.find_element(By.CSS_SELECTOR, ".col-auto.mb-5").text
+        assert "Receta" in self.driver.find_element(By.CSS_SELECTOR, ".col-auto").text
         self.driver.find_element(By.XPATH, "//span[contains(.,\'Ingredientes\')]").click()
+        assert producto == self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(1) .nombreRecetaNormal").text
+        #Comprueba que el producto y la receta estan relacionados
         self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(3) .nombreRecetaNormal .fa").click()
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
         assert len(elements) > 0
+        #Y si entre en uno de los ingredientes de la receta accede a un producto real
 
     def test_receta_e_ingredientes_no_registrado(self):
         self.driver.get(f'{self.live_server_url}/')
