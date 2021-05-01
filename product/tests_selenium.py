@@ -245,6 +245,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
         assert len(elements) > 0
@@ -281,6 +282,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyAdminPasswordJQSA!=1")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
         assert len(elements) > 0
