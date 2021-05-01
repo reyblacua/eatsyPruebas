@@ -278,10 +278,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         # EXISTEN LAS CARDS EN LA PG 2
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
-        self.driver.get(f'{self.live_server_url}/product/list')
-        # COMPROBAMOS LOS BOTONES Y LA BARRA DE BÚSQUEDA
-        elements = self.driver.find_elements(By.ID, "filtros-form")
-        assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?estado=pendiente')
         self.driver.get(f'{self.live_server_url}/product/list?titulo=Natillas&dietas=3&orderBy=newest')
         # EXISTEN LAS CARDS PARA UN DADO NOMBRE BUSCADO
