@@ -189,7 +189,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         #assert producto == self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(1) .nombreRecetaNormal").text
         #Comprueba que el producto y la receta estan relacionados
-        self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(3) .nombreRecetaNormal .fa").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(3) .nombreRecetaNormal").click()
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
         assert len(elements) > 0
         #Y si entre en uno de los ingredientes de la receta accede a un producto real
