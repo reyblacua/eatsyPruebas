@@ -173,6 +173,32 @@ class SeleniumTests(StaticLiveServerTestCase):
     #    elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
     #    assert len(elements) > 0
 
+    def test_receta_e_ingredientes(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+        self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
+        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
+        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.driver.get(f'{self.live_server_url}/product/show/32') 
+        elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
+        assert len(elements) > 0 
+        self.driver.get(f'{self.live_server_url}/recipe/show/6')
+        elements = self.driver.find_elements(By.XPATH, "//div[2]/div/div")
+        assert len(elements) > 0
+        self.driver.get(f'{self.live_server_url}/product/show/13') 
+        elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
+        assert len(elements) > 0
+
+    def test_receta_e_ingredientes_no_registrado(self):
+        self.driver.get(f'{self.live_server_url}/')
+        elements = self.driver.find_elements(By.LINK_TEXT, "Iniciar sesión")
+        assert len(elements) > 0
+        self.driver.get(f'{self.live_server_url}/recipe/show/6')
+        elements = self.driver.find_elements(By.XPATH, "//button[contains(.,\'Iniciar sesión\')]")
+        assert len(elements) > 0
+        elements = self.driver.find_elements(By.LINK_TEXT, "Tofu")
+        assert len(elements) == 0
+
     def test_aboutUs(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.CSS_SELECTOR, ".col-sm-2:nth-child(1) u").click()
