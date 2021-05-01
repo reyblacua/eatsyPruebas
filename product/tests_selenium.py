@@ -187,7 +187,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/recipe/show/6')
         elements = self.driver.find_elements(By.XPATH, "//div[2]/div/div")
         assert len(elements) > 0
-        self.driver.find_element(By.XPATH, "//span[contains(.,\'Ingredientes\')]").click()
         assert producto == self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(1) .nombreRecetaNormal").text
         #Comprueba que el producto y la receta estan relacionados
         self.driver.find_element(By.CSS_SELECTOR, ".product-card-comment:nth-child(3) .nombreRecetaNormal .fa").click()
