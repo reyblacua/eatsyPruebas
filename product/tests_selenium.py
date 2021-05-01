@@ -255,8 +255,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list')
         # COMPROBAMOS LOS 2 BOTONES QUE VEN LOS USUARIOS
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".btn-md")
-        assert len(elements) > 0
         assert self.driver.find_element(By.ID, "dropdownMenuButton").text == "Borrar filtros"
         elements = self.driver.find_elements(By.ID, "filtros-form")
         assert len(elements) > 0
@@ -286,8 +284,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list')
         # COMPROBAMOS LOS 3 BOTONES QUE VE EL ADMINISTRADOR
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".btn-md")
-        assert len(elements) > 0
         assert self.driver.find_element(By.ID, "dropdownMenuButton").text == "Borrar filtros"
         elements = self.driver.find_elements(By.ID, "filtros-form")
         assert len(elements) > 0
