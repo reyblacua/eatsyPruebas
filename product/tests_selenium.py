@@ -18,15 +18,18 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.quit()
         call_command("flush", interactive=False)
 
+    def iniciar_sesion(self,username,password):
+        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
+        self.driver.find_element(By.ID, "id_username").send_keys(username)
+        self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
+        self.driver.find_element(By.ID, "id_password").send_keys(password)
+        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+
     def test_restriccionesadmin(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.set_window_size(1080, 1036)
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("Usuario2")
-        self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario2PasswordJQSA!=")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.iniciar_sesion("Usuario2","eatsyUsuario2PasswordJQSA!=")
         self.driver.get(f'{self.live_server_url}/product/list')
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".padding-list:nth-child(4) .w-100")
         assert len(elements) == 0
@@ -40,22 +43,14 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_admineditarproducto(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.set_window_size(1080, 1036)
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("admin")
-        self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyAdminPasswordJQSA!=1")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.iniciar_sesion("admin","eatsyAdminPasswordJQSA!=1")
         self.driver.get(f'{self.live_server_url}/product/review/55')
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".save")
         assert len(elements) > 0
 
     def test_receta_e_ingredientes(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.iniciar_sesion("Usuario1","eatsyUsuario1PasswordJQSA!=")
         self.driver.get(f'{self.live_server_url}/product/show/32') 
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
         assert len(elements) > 0 
@@ -94,24 +89,16 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
         assert self.driver.find_element(By.CSS_SELECTOR, ".titleblock").text == "Políticas de privacidad"
 
-
-    
     def test_listado_no_login(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.set_window_size(1080, 1036)
         self.driver.get(f'{self.live_server_url}/product/list')
         assert self.driver.find_element(By.CSS_SELECTOR, ".mb-3").text == "Inicio de sesión"
 
-
     def test_listado_usuario_no_activo(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.set_window_size(1080, 1036)
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.ID, "id_username").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("Usuario3")
-        self.driver.find_element(By.ID, "id_password").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario3PasswordJQSA!=")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.iniciar_sesion("Usuario3","eatsyUsuario3PasswordJQSA!=")
         self.driver.get(f'{self.live_server_url}/product/list')
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
         assert len(elements) > 0
@@ -128,12 +115,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_añadir_producto_usuario_no_activo(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.set_window_size(1080, 1036)
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.ID, "id_username").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("Usuario3")
-        self.driver.find_element(By.ID, "id_password").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario3PasswordJQSA!=")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.iniciar_sesion("Usuario3","eatsyUsuario3PasswordJQSA!=")
         self.driver.get(f'{self.live_server_url}/product/create')
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
         assert len(elements) > 0
@@ -142,12 +124,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.set_window_size(1080, 1036)
         # INICIO DE SESIÓN
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.ID, "id_username").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("Usuario1")
-        self.driver.find_element(By.ID, "id_password").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.iniciar_sesion("Usuario1","eatsyUsuario1PasswordJQSA!=")
         self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
@@ -166,12 +143,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.set_window_size(1080, 1036)
         # INICIO DE SESIÓN
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.ID, "id_username").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("admin")
-        self.driver.find_element(By.ID, "id_password").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyAdminPasswordJQSA!=1")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.iniciar_sesion("admin","eatsyAdminPasswordJQSA!=1")
         self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
