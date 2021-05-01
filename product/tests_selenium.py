@@ -251,8 +251,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?page=2')
         # EXISTEN LAS CARDS EN LA PG 2
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
-        assert len(elements) > 0
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list')
@@ -264,8 +262,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?titulo=Natillas&dietas=3&orderBy=newest')
         # EXISTEN LAS CARDS PARA UN DADO NOMBRE BUSCADO
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
-        assert len(elements) > 0
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
 
@@ -286,8 +282,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?page=2')
         # EXISTEN LAS CARDS EN LA PG 2
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
-        assert len(elements) > 0
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list')
@@ -299,14 +293,10 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?estado=pendiente')
         # EXISTEN LAS CARDS PARA LA VISTA DE PRODUCTOS EN REVISION
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
-        assert len(elements) > 0
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/product/list?titulo=Natillas&dietas=3&orderBy=newest')
         # EXISTEN LAS CARDS PARA UN DADO NOMBRE BUSCADO
-        elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
-        assert len(elements) > 0
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
 
