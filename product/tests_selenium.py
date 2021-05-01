@@ -211,6 +211,29 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/product/list')
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
         assert len(elements) > 0
+
+
+    def test_añadir_producto_no_login(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.set_window_size(1080, 1036)
+        self.driver.get(f'{self.live_server_url}/product/create')
+        elements = self.driver.find_element(By.CSS_SELECTOR, ".mb-3")
+        assert len(elements) > 0
+
+
+    def test_añadir_producto_usuario_no_activo(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.set_window_size(1080, 1036)
+        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+        self.driver.find_element(By.ID, "id_username").click()
+        self.driver.find_element(By.ID, "id_username").send_keys("Usuario3")
+        self.driver.find_element(By.ID, "id_password").click()
+        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario3PasswordJQSA!=")
+        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.driver.get(f'{self.live_server_url}/product/create')
+        elements = self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto")
+        assert len(elements) > 0
+    
     
     def test_listado_usuario_activo(self):
         self.driver.get(f'{self.live_server_url}/')
@@ -222,7 +245,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario1PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
         assert len(elements) > 0
@@ -259,7 +281,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").click()
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyAdminPasswordJQSA!=1")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.get(f'{self.live_server_url}/product/list')
         # EXISTEN LAS CARDS
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".col-sm-8")
         assert len(elements) > 0
@@ -291,26 +312,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".product-card-inner")
         assert len(elements) > 0
 
-
-    def test_añadir_producto_no_login(self):
-        self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1080, 1036)
-        self.driver.get(f'{self.live_server_url}/product/create')
-        elements = self.driver.find_element(By.CSS_SELECTOR, ".mb-3")
-        assert len(elements) > 0
-
-    def test_añadir_producto_usuario_no_activo(self):
-        self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1080, 1036)
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.ID, "id_username").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("Usuario3")
-        self.driver.find_element(By.ID, "id_password").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario3PasswordJQSA!=")
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.get(f'{self.live_server_url}/product/create')
-        elements = self.driver.find_element(By.CSS_SELECTOR, ".nombreProducto")
-        assert len(elements) > 0
     
     # def test_pruebaCreacion(self):
     #     self.driver.get(f'{self.live_server_url}/')
