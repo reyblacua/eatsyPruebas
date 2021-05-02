@@ -1,12 +1,9 @@
 import json
-from typing import List
 from urllib.parse import urlencode
-
 from authentication.models import Dieta, Perfil
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
-from django.urls import reverse
 from rest_framework.test import APIClient, APITestCase
 
 # Create your tests here.
@@ -113,7 +110,6 @@ class EatsyApiTests(APITestCase):
             "titulo":"Comentario de prueba",
             "mensaje":"Comentario de ejemplo",
         })
-        
         response = self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/24")
@@ -125,7 +121,6 @@ class EatsyApiTests(APITestCase):
             "precio":12,
             "addingUbication":"Guardar+ubicación",
         })
-        
         response = self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/24")
@@ -140,7 +135,6 @@ class EatsyApiTests(APITestCase):
             "precio":3,
             "addingUbication":"Guardar+ubicación",
         })
-        
         response = self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/24")
@@ -157,12 +151,10 @@ class EatsyApiTests(APITestCase):
             "ubicaciones":3,
             "revision":"Aceptar",
         })
-        
         response = self.client.post('/product/review/26', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/26")
         self.client.logout()
-    
 
     def test_product_review_decline(self):
         self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
@@ -176,12 +168,11 @@ class EatsyApiTests(APITestCase):
             "ubicaciones":3,
             "revision":"Denegar",
         })
-        
         response = self.client.post('/product/review/25', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/list")
         self.client.logout()
-    
+
 
     def test_product_rate(self):
         self.client.login(username='john', password='johnpassword')
@@ -189,7 +180,6 @@ class EatsyApiTests(APITestCase):
             "id":24,
             "rate":3,
         })
-        
         response = self.client.post('/product/show/24/rate', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)["success"], "true")
@@ -313,7 +303,7 @@ class EatsyApiTests(APITestCase):
         self.client.login(username='john', password='johnpassword')
         response = self.client.get('/shoppingList/', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
-    
+
     def test_delete_element_from_lista_compra(self):
         self.client.login(username='john', password='johnpassword')
         self.client.post('/shoppingList/empty')
